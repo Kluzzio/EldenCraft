@@ -212,11 +212,4 @@ public abstract class PlayerMixin
         if (maxStamina >= 0)
             dataTracker.set(MAX_STAMINA, MathHelper.clamp(maxStamina, 0, 9999));
     }
-
-    // TEST
-
-    @Override
-    public ItemStack getMainHandStack() {
-        return this.inventory.getStack(15);
-    }
 }
