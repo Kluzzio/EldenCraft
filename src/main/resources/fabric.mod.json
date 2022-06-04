@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "eldencraft",
+  "version": "${version}",
+  "name": "EldenCraft",
+  "description": "",
+  "authors": [
+    "Chronos",
+    "Kluzzio"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/eldencraft/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "timefall.eldencraft.client.eldencraftClient"
+    ],
+    "main": [
+      "timefall.eldencraft.eldencraft"
+    ]
+  },
+  "mixins": [
+    "eldencraft.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.4",
+    "fabric": "*",
+    "minecraft": "1.18.2"
+  }
+}
