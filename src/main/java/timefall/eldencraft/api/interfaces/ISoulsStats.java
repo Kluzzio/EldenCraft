@@ -10,10 +10,8 @@ public interface ISoulsStats {
     int getIntelligence();
     int getFaith();
     int getArcane();
-    int getHP();
     int getFP();
     int getStamina();
-    int getMaxHP();
     int getMaxFP();
     int getMaxStamina();
 

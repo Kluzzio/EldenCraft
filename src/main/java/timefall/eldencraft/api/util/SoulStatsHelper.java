@@ -31,18 +31,13 @@ public class SoulStatsHelper {
     public static int getArcane(PlayerEntity pe) {
         return ((ISoulsStats) pe).getArcane();
     }
-    public static int getHP(PlayerEntity pe) {
-        return ((ISoulsStats) pe).getHP();
-    }
     public static int getFP(PlayerEntity pe) {
         return ((ISoulsStats) pe).getFP();
     }
     public static int getStamina(PlayerEntity pe) {
         return ((ISoulsStats) pe).getStamina();
     }
-    public static int getMaxHP(PlayerEntity pe) {
-        return ((ISoulsStats) pe).getMaxHP();
-    }
+
     public static int getMaxFP(PlayerEntity pe) {
         return ((ISoulsStats) pe).getMaxFP();
     }

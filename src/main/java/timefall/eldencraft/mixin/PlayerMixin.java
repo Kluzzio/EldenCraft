@@ -31,8 +31,6 @@ public abstract class PlayerMixin
         extends LivingEntity
         implements ISoulsStats, IRuneHolder {
 
-    @Shadow @Final private PlayerInventory inventory;
-
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -55,7 +53,6 @@ public abstract class PlayerMixin
 
     // ** Base Stats ** //
 
-    private static final TrackedData<Integer> HP = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> FP = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> STAMINA = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -91,7 +88,6 @@ public abstract class PlayerMixin
         dataTracker.startTracking(INTELLIGENCE, 0);
         dataTracker.startTracking(FAITH, 0);
         dataTracker.startTracking(ARCANE, 0);
-        dataTracker.startTracking(HP, 0);
         dataTracker.startTracking(FP, 0);
         dataTracker.startTracking(STAMINA, 0);
         dataTracker.startTracking(MAX_FP, 0);
@@ -110,7 +106,6 @@ public abstract class PlayerMixin
         nbt.putInt("Intelligence", getIntelligence());
         nbt.putInt("Faith", getFaith());
         nbt.putInt("Arcane", getArcane());
-        nbt.putInt("HP", getHP());
         nbt.putInt("FP", getFP());
         nbt.putInt("Stamina", getStamina());
         nbt.putInt("Max_FP", getMaxFP());
@@ -129,7 +124,6 @@ public abstract class PlayerMixin
         setIntelligence(nbt.getInt("Intelligence"));
         setFaith(nbt.getInt("Faith"));
         setArcane(nbt.getInt("Arcane"));
-        setHp(nbt.getInt("HP"));
         setFp(nbt.getInt("FP"));
         setStamina(nbt.getInt("Stamina"));
         setMaxFp(nbt.getInt("Max_FP"));
@@ -146,7 +140,6 @@ public abstract class PlayerMixin
     public int getIntelligence() { return dataTracker.get(INTELLIGENCE); }
     public int getFaith() { return dataTracker.get(FAITH); }
     public int getArcane() { return dataTracker.get(ARCANE); }
-    public int getHP() { return dataTracker.get(HP); }
     public int getFP() { return dataTracker.get(FP); }
     public int getStamina() { return dataTracker.get(STAMINA); }
     public int getMaxFP() { return dataTracker.get(MAX_FP); }
@@ -191,10 +184,6 @@ public abstract class PlayerMixin
     public void setArcane(int arcane) {
         if (arcane >= 0)
             dataTracker.set(ARCANE, MathHelper.clamp(arcane, 0, 99));
-    }
-    public void setHp(int hp) {
-        if (hp >= 0)
-            dataTracker.set(HP, MathHelper.clamp(hp, 0, getMaxHP()));
     }
     public void setFp(int fp) {
         if (fp >= 0)
