@@ -1,30 +1,22 @@
 package timefall.eldencraft.mixin;
 
-import net.minecraft.block.AirBlock;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Blocking;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import timefall.eldencraft.api.interfaces.IRuneHolder;
 import timefall.eldencraft.api.interfaces.ISoulsStats;
+import timefall.eldencraft.api.util.RuneHolderHelper;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerMixin
@@ -200,5 +192,12 @@ public abstract class PlayerMixin
     public void setMaxStamina(int maxStamina) {
         if (maxStamina >= 0)
             dataTracker.set(MAX_STAMINA, MathHelper.clamp(maxStamina, 0, 9999));
+    }
+
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    private void dropHeldRunes(DamageSource source, CallbackInfo ci) {
+        if ((Object) this instanceof PlayerEntity playerEntity) {
+            RuneHolderHelper.loseRunes(playerEntity);
+        }
     }
 }
