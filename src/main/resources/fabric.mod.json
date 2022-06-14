@@ -14,10 +14,10 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "timefall.eldencraft.client.eldencraftClient"
+      "timefall.eldencraft.client.EldencraftClient"
     ],
     "main": [
-      "timefall.eldencraft.eldencraft"
+      "timefall.eldencraft.Eldencraft"
     ]
   },
   "mixins": [
@@ -26,6 +26,6 @@
   "depends": {
     "fabricloader": ">=0.14.4",
     "fabric": "*",
-    "minecraft": "1.18.2"
+    "minecraft": "1.19.x"
   }
 }
