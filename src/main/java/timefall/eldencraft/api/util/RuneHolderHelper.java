@@ -35,13 +35,13 @@ public class RuneHolderHelper {
     }
 
     public static void loseRunes(PlayerEntity pe) {
-        //TODO make way to drop runes on ground
-        //if (!pe.reclaimedRunes) {
-            //Delete any runes on ground that were dropped by pe
-        //}
+        if (!((IRuneHolder) pe).areRunesReclaimed()) {
+            if (pe.world.getBlockState(((IRuneHolder) pe).getRunesPos()).isOf(BlocksInit.ELDENCRAFT_BLOCKS.get(BlocksID.RUNE_BLOCK))) {
+                pe.world.setBlockState(((IRuneHolder) pe).getRunesPos(), Blocks.AIR.getDefaultState());
+            }
+        }
         createRuneEntity(pe, getHeldRunes(pe));
         setHeldRunes(pe, 0);
-        //pe.reclaimedRunes = false;
     }
 
     public static void gainRunes(PlayerEntity pe, int runes) {
@@ -60,6 +60,8 @@ public class RuneHolderHelper {
             if (blockEntity != null) {
                 ((RuneBlockEntity) blockEntity).setOwner(playerEntity.getGameProfile());
                 ((RuneBlockEntity) blockEntity).setRunes(runes);
+                ((IRuneHolder) playerEntity).setRunesPos(blockPos);
+                ((IRuneHolder) playerEntity).setRunesReclaimed(false);
             }
         }
     }

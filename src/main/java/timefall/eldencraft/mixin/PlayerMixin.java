@@ -8,6 +8,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,9 +33,7 @@ public abstract class PlayerMixin
 
     private static final TrackedData<Integer> LEVEL = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> HELDRUNES = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
-
     // ** Attribute Points ** //
-
     private static final TrackedData<Integer> VIGOR = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> MIND = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> ENDURANCE = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
@@ -42,25 +42,24 @@ public abstract class PlayerMixin
     private static final TrackedData<Integer> INTELLIGENCE = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> FAITH = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> ARCANE = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
-
     // ** Base Stats ** //
-
     private static final TrackedData<Integer> FP = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> STAMINA = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
-
     private static final TrackedData<Integer> MAX_FP = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> MAX_STAMINA = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.INTEGER);
+    // ** Rune Block Info ** //
+    private static final TrackedData<Boolean> RECLAIMED_RUNES = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<BlockPos> RUNES_POS = DataTracker.registerData(PlayerMixin.class, TrackedDataHandlerRegistry.BLOCK_POS);
+
 
     // Equip Load
         // Max dependent on Stamina. Current dependent on Equipped armor
-
     // Poise
         // Dependent on Equipped armor
     // Discovery
         // Dependent on Arcane
     // Memory Slots
         // Dependent on Memory Stones
-
     // ** Resistance ** //
 
     //TODO Find Out what the numbers on the status page mean
@@ -84,6 +83,8 @@ public abstract class PlayerMixin
         dataTracker.startTracking(STAMINA, 0);
         dataTracker.startTracking(MAX_FP, 0);
         dataTracker.startTracking(MAX_STAMINA, 0);
+        dataTracker.startTracking(RECLAIMED_RUNES, true);
+        dataTracker.startTracking(RUNES_POS, null);
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -102,6 +103,8 @@ public abstract class PlayerMixin
         nbt.putInt("Stamina", getStamina());
         nbt.putInt("Max_FP", getMaxFP());
         nbt.putInt("Max_Stamina", getMaxStamina());
+        nbt.putBoolean("Reclaimed_Runes", areRunesReclaimed());
+        nbt.put("Runes_Pos", NbtHelper.fromBlockPos(getRunesPos()));
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
@@ -120,6 +123,8 @@ public abstract class PlayerMixin
         setStamina(nbt.getInt("Stamina"));
         setMaxFp(nbt.getInt("Max_FP"));
         setMaxStamina(nbt.getInt("Max_Stamina"));
+        setRunesReclaimed(nbt.getBoolean("Reclaimed_Runes"));
+        setRunesPos(NbtHelper.toBlockPos(nbt.getCompound("Runes_Pos")));
     }
 
     public int getLevel() { return dataTracker.get(LEVEL); }
@@ -136,6 +141,8 @@ public abstract class PlayerMixin
     public int getStamina() { return dataTracker.get(STAMINA); }
     public int getMaxFP() { return dataTracker.get(MAX_FP); }
     public int getMaxStamina() { return dataTracker.get(MAX_STAMINA); }
+    public boolean areRunesReclaimed() { return dataTracker.get(RECLAIMED_RUNES); }
+    public BlockPos getRunesPos() { return dataTracker.get(RUNES_POS); }
 
     public void setLevel(int level) {
         if (level >= 0)
@@ -192,6 +199,10 @@ public abstract class PlayerMixin
     public void setMaxStamina(int maxStamina) {
         if (maxStamina >= 0)
             dataTracker.set(MAX_STAMINA, MathHelper.clamp(maxStamina, 0, 9999));
+    }
+    public void setRunesReclaimed(boolean runesReclaimed) { dataTracker.set(RECLAIMED_RUNES, runesReclaimed); }
+    public void setRunesPos(BlockPos blockPos) {
+        dataTracker.set(RUNES_POS, blockPos);
     }
 
     @Inject(method = "onDeath", at = @At("HEAD"))

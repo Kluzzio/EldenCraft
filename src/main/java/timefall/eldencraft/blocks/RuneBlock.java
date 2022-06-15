@@ -10,6 +10,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import timefall.eldencraft.api.interfaces.IRuneHolder;
 import timefall.eldencraft.api.util.RuneHolderHelper;
 import timefall.eldencraft.blocks.blockentities.RuneBlockEntity;
 
@@ -32,7 +33,8 @@ public class RuneBlock extends BlockWithEntity implements BlockEntityProvider {
             if (((RuneBlockEntity) blockEntity).verifyOwner(player)) {
                 RuneHolderHelper.gainRunes(player, ((RuneBlockEntity) blockEntity).getRunes());
                 world.breakBlock(pos, false, player);
-                // player.reclaimedRunes = true;
+                ((IRuneHolder) player).setRunesPos(null);
+                ((IRuneHolder) player).setRunesReclaimed(true);
                 return ActionResult.SUCCESS;
             }
         }
