@@ -31,7 +31,7 @@ public class RuneBlock extends BlockWithEntity implements BlockEntityProvider {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!world.isClient && blockEntity != null) {
             if (((RuneBlockEntity) blockEntity).verifyOwner(player)) {
-                RuneHolderHelper.gainRunes(player, ((RuneBlockEntity) blockEntity).getRunes());
+                RuneHolderHelper.addRunes(player, ((RuneBlockEntity) blockEntity).getRunes());
                 world.breakBlock(pos, false, player);
                 ((IRuneHolder) player).setRunesPos(null);
                 ((IRuneHolder) player).setRunesReclaimed(true);

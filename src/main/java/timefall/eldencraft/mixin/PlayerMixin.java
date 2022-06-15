@@ -84,7 +84,7 @@ public abstract class PlayerMixin
         dataTracker.startTracking(MAX_FP, 0);
         dataTracker.startTracking(MAX_STAMINA, 0);
         dataTracker.startTracking(RECLAIMED_RUNES, true);
-        dataTracker.startTracking(RUNES_POS, null);
+        dataTracker.startTracking(RUNES_POS, new BlockPos(0, -61, 0));
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -202,6 +202,8 @@ public abstract class PlayerMixin
     }
     public void setRunesReclaimed(boolean runesReclaimed) { dataTracker.set(RECLAIMED_RUNES, runesReclaimed); }
     public void setRunesPos(BlockPos blockPos) {
+        if (blockPos == null)
+            blockPos = new BlockPos(0, -61, 0);
         dataTracker.set(RUNES_POS, blockPos);
     }
 
