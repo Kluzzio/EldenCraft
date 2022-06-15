@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import timefall.eldencraft.api.interfaces.IRuneHolder;
 import timefall.eldencraft.blocks.BlocksInit;
-import timefall.eldencraft.blocks.RuneBlock;
 import timefall.eldencraft.blocks.blockentities.RuneBlockEntity;
 import timefall.eldencraft.enums.BlocksID;
 
@@ -41,6 +40,7 @@ public class RuneHolderHelper {
             //Delete any runes on ground that were dropped by pe
         //}
         createRuneEntity(pe, getHeldRunes(pe));
+        setHeldRunes(pe, 0);
         //pe.reclaimedRunes = false;
     }
 
@@ -57,22 +57,10 @@ public class RuneHolderHelper {
 
             playerEntity.world.setBlockState(blockPos, blocks.getDefaultState());
             BlockEntity blockEntity = playerEntity.world.getBlockEntity(blockPos);
-            if (blockEntity != null)
-                ((RuneBlockEntity) blockEntity).owner = playerEntity.getGameProfile();
+            if (blockEntity != null) {
+                ((RuneBlockEntity) blockEntity).setOwner(playerEntity.getGameProfile());
+                ((RuneBlockEntity) blockEntity).setRunes(runes);
+            }
         }
     }
 }
-/*
-Runes -> new RuneBlock (owner, runeAmount)
-
-this.owner = owner
-this.runeAmount = runeAmount
-
-
-onUse
-if (player == this.owner)
-  break it and give the runes
- else
-   nothing
- player.reclaimedRunes = true
- */

@@ -1,7 +1,6 @@
 package timefall.eldencraft.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.registry.Registry;
 import timefall.eldencraft.enums.BlocksID;
 

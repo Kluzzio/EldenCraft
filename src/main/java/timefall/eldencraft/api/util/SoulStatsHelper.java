@@ -81,9 +81,6 @@ public class SoulStatsHelper {
     public static void setStamina(PlayerEntity pe, int stamina) {
         ((ISoulsStats) pe).setStamina(stamina);
     }
-    public static void setMaxHp(PlayerEntity pe, int maxHp) {
-        ((ISoulsStats) pe).setMaxHp(maxHp);
-    }
     public static void setMaxFp(PlayerEntity pe, int maxFp) {
         ((ISoulsStats) pe).setStamina(maxFp);
     }

@@ -21,7 +21,7 @@ import timefall.eldencraft.api.util.RuneHolderHelper;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerMixin
         extends LivingEntity
-        implements ISoulsStats, IRuneHolder {
+        implements IRuneHolder, ISoulsStats {
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -107,7 +107,7 @@ public abstract class PlayerMixin
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     public void injectReadCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
         setLevel(nbt.getInt("Level"));
-        setHeldrunes(nbt.getInt("HeldRunes"));
+        setHeldRunes(nbt.getInt("HeldRunes"));
         setVigor(nbt.getInt("Vigor"));
         setMind(nbt.getInt("Mind"));
         setEndurance(nbt.getInt("Endurance"));
@@ -141,7 +141,7 @@ public abstract class PlayerMixin
         if (level >= 0)
             dataTracker.set(LEVEL, MathHelper.clamp(level, 0, 713));
     }
-    public void setHeldrunes(int heldrunes) {
+    public void setHeldRunes(int heldrunes) {
         if (heldrunes >= 0)
             dataTracker.set(HELDRUNES, heldrunes);
     }

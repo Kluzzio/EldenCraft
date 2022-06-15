@@ -24,10 +24,8 @@ public interface ISoulsStats {
     void setIntelligence(int intelligence);
     void setFaith(int faith);
     void setArcane(int arcane);
-    void setHp(int hp);
     void setFp(int fp);
     void setStamina(int stamina);
-    void setMaxHp(int maxHp);
     void setMaxFp(int maxFp);
     void setMaxStamina(int maxStamina);
 }

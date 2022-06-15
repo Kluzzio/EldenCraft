@@ -10,12 +10,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import timefall.eldencraft.api.util.RuneHolderHelper;
 import timefall.eldencraft.blocks.blockentities.RuneBlockEntity;
 
 public class RuneBlock extends BlockWithEntity implements BlockEntityProvider {
 
 
-    public RuneBlock() { super(FabricBlockSettings.of(Material.WOOD).dropsNothing().nonOpaque().luminance(value -> 2));
+    public RuneBlock() { super(FabricBlockSettings.of(Material.AIR).dropsNothing().luminance(value -> 2).noCollision());
     }
 
     @Override
@@ -28,8 +29,10 @@ public class RuneBlock extends BlockWithEntity implements BlockEntityProvider {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!world.isClient && blockEntity != null) {
-            if (((RuneBlockEntity) blockEntity).newphonewhodis(player)) {
+            if (((RuneBlockEntity) blockEntity).verifyOwner(player)) {
+                RuneHolderHelper.gainRunes(player, ((RuneBlockEntity) blockEntity).getRunes());
                 world.breakBlock(pos, false, player);
+                // player.reclaimedRunes = true;
                 return ActionResult.SUCCESS;
             }
         }
